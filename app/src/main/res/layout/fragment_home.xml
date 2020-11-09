@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/cardview_light_background"
+    tools:context=".acitivities.ui.home.HomeFragment">
+    <androidx.cardview.widget.CardView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:elevation="5dp"
+        android:background="@color/cardview_light_background"
+        android:layout_margin="5dp"
+        >
+        <LinearLayout
+            android:background="@color/cardview_light_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/gray"
+                android:focusable="true"
+                android:focusedByDefault="false"
+                android:focusableInTouchMode="true"
+                android:hint="Search gigs by Name"
+                android:background="@color/cardview_light_background"
+                android:layout_gravity="center"
+                android:id="@+id/etSerach"/>
+            <ImageView
+                android:src="@drawable/ic_baseline_search_24"
+                android:id="@+id/ivSearch"
+                app:tint="@color/grayDark"
+                android:layout_gravity="center"
+                android:padding="9dp"
+                android:layout_width="50dp"
+                android:layout_height="50dp"/>
+        </LinearLayout>
+        <SearchView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:queryHint="What are you looking for"
+            android:id="@+id/searchViewa"
+            android:visibility="gone"
+            android:background="@color/cardview_light_background"
+            android:textColor="@color/black"
+            />
+    </androidx.cardview.widget.CardView>
+    <androidx.core.widget.NestedScrollView
+        android:background="@color/cardview_light_background"
+        android:layout_width="match_parent"
+        android:layout_marginBottom="100dp"
+        android:layout_height="match_parent">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@color/cardview_light_background"
+            android:orientation="vertical">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/cardview_light_background"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Top Catagories"
+            android:fontFamily="@font/roboto"
+            android:textSize="14sp"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View All"
+            android:visibility="gone"
+            android:fontFamily="@font/roboto"
+            android:textSize="12sp"
+            android:textColor="@color/blue" />
+    </LinearLayout>
+            <androidx.recyclerview.widget.RecyclerView
+                android:background="@color/cardview_light_background"
+                android:id="@+id/rvTopCatagories"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/cardview_light_background"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Latest Gigs"
+            android:fontFamily="@font/roboto"
+            android:textSize="14sp"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View All"
+            android:id="@+id/tvViewAll1"
+            android:fontFamily="@font/roboto"
+            android:textSize="12sp"
+            android:textColor="@color/blue" />
+    </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:background="@color/cardview_light_background"
+            android:id="@+id/rvLatestGigs"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="5dp"
+        android:background="@color/cardview_light_background"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Popular Gigs"
+            android:fontFamily="@font/roboto"
+            android:textSize="14sp"
+            android:layout_weight="1"
+            android:textStyle="bold"
+            android:textColor="@color/black" />
+        <TextView
+            android:id="@+id/tvViewAll2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="View All"
+            android:fontFamily="@font/roboto"
+            android:textSize="12sp"
+            android:textColor="@color/blue" />
+    </LinearLayout>
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvPopularGigs"
+            android:background="@color/cardview_light_background"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        </LinearLayout>
+    </androidx.core.widget.NestedScrollView>
+</LinearLayout>

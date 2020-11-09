@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/mobile_navigation"
+    app:startDestination="@+id/navigation_home">
+
+    <fragment
+        android:id="@+id/navigation_home"
+        android:name="com.gohar_amin.tz.acitivities.ui.home.HomeFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_home" >
+        <action
+            android:id="@+id/action_navigation_home_to_navigation_buy"
+            app:destination="@id/navigation_buy" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_sell"
+        android:name="com.gohar_amin.tz.acitivities.ui.sell.SellFragment"
+        android:label="@string/title_sell"
+        tools:layout="@layout/fragment_dashboard" >
+        <action
+            android:id="@+id/action_navigation_sell_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/navigation_buy"
+        android:name="com.gohar_amin.tz.acitivities.ui.buy.BuyFragment"
+        android:label="@string/title_buy"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/navigation_setting"
+        android:name="com.gohar_amin.tz.acitivities.ui.SettingFragment"
+        android:label="Setting"
+        tools:layout="@layout/fragment_setting" >
+        <action
+            android:id="@+id/action_navigation_setting_to_navigation_home"
+            app:destination="@id/navigation_home" />
+    </fragment>
+
+    <fragment
+        android:id="@+id/nav_mygigs"
+        android:name="com.gohar_amin.tz.acitivities.ui.MyGigsFragment"
+        android:label="My Gigs"
+        tools:layout="@layout/fragment_my_gigs" />
+    <fragment
+        android:id="@+id/allUsersFragment"
+        android:name="com.gohar_amin.tz.acitivities.ui.AllUsersFragment"
+        android:label="Chat"
+        tools:layout="@layout/fragment_all_users" >
+    </fragment>
+</navigation>

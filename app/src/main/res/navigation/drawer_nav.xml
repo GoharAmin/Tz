@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/drawer_nav.xml"
+    app:startDestination="@+id/nav_home"
+    >
+    <fragment
+        android:id="@+id/nav_home"
+        android:name="com.gohar_amin.tz.acitivities.ui.home.HomeFragment"
+        android:label="@string/menu_home"
+        tools:layout="@layout/fragment_home" />
+
+    <fragment
+        android:id="@+id/nav_gallery"
+        android:name="com.gohar_amin.tz.acitivities.ui.buy.BuyFragment"
+        android:label="@string/my_gigs"
+        tools:layout="@layout/fragment_notifications" />
+
+    <fragment
+        android:id="@+id/nav_slideshow"
+        android:name="com.gohar_amin.tz.acitivities.ui.sell.SellFragment"
+        android:label="@string/menu_slideshow"
+        tools:layout="@layout/fragment_dashboard" />
+</navigation>

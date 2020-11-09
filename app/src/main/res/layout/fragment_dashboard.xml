@@ -1,0 +1,366 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:background="@color/cardview_light_background"
+    tools:context=".acitivities.ui.sell.SellFragment">
+    <LinearLayout
+        android:background="@color/cardview_light_background"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_margin="10dp"
+            android:background="@color/cardview_light_background"
+            android:orientation="vertical">
+            <RelativeLayout
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:layout_width="match_parent"
+                android:background="@color/cardview_light_background"
+                android:layout_height="wrap_content">
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:layout_width="80dp"
+                    android:layout_height="80dp"
+                    android:background="@color/cardview_light_background"
+                    android:padding="3dp"
+                    android:src="@drawable/ic_user"
+
+                    app:civ_border_width="0.5dp"
+                    android:id="@+id/ivProfile"
+                    />
+                <ImageView
+                    android:id="@+id/ivEdit"
+                    android:layout_width="30dp"
+                    android:layout_height="30dp"
+                    android:src="@drawable/ic_pencil"
+                    android:background="@drawable/round_bg"
+                    android:layout_below="@id/ivProfile"
+                    android:padding="10dp"
+                    app:tint="@color/white"
+                    android:layout_marginTop="-30dp"
+                    android:layout_marginStart="60dp"
+                    />
+            </RelativeLayout>
+            <LinearLayout
+                android:background="@color/cardview_light_background"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                >
+
+                <TextView
+                    android:id="@+id/tvGigTitle"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Title for your Gig*"
+                    android:textColor="@color/gray"
+                    android:textSize="12sp"
+                    android:visibility="invisible" />
+                <EditText
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:textColorHint="@color/gray"
+                    android:hint="Title for your Gig*"
+                    android:id="@+id/etTitle"/>
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/cardview_light_background"
+                >
+
+                <TextView
+                    android:id="@+id/tvDeliverTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="When you deliver the Gig*"
+                    android:textColor="@color/gray"
+                    android:textSize="12sp"
+                    android:visibility="invisible" />
+
+                <EditText
+                    android:id="@+id/etDeliverTime"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="When you deliver the Gig"
+                    android:textColorHint="@color/gray"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:visibility="visible" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/cardview_light_background"
+                >
+
+                <TextView
+                    android:id="@+id/tvGigCost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Cost of the Gigs"
+                    android:textColor="@color/gray"
+                    android:textSize="12sp"
+                    android:visibility="invisible" />
+
+                <EditText
+                    android:id="@+id/etGigCost"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Cost of the Gigs"
+                    android:inputType="number"
+                    android:textColorHint="@color/gray"
+                    android:textColor="@color/black"
+                    android:textSize="14sp"
+                    android:visibility="visible" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/cardview_light_background"
+                >
+
+                <TextView
+                    android:id="@+id/tvGigDetails"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="Provide more details about your Gig*"
+                    android:textColor="@color/gray"
+                    android:textSize="12sp"
+                    android:visibility="invisible" />
+
+                <EditText
+                    android:id="@+id/etGigDetail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:hint="Provide more details about your Gig*"
+                    android:textColor="@color/black"
+                    android:textColorHint="@color/gray"
+
+                    android:textSize="14sp"
+                    android:visibility="visible" />
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:background="@color/cardview_light_background"
+                >
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="12sp"
+                    android:textColor="@color/gray"
+                    android:text="Select Category*"
+                    />
+
+                <Spinner
+                    android:id="@+id/spinner"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    />
+            </LinearLayout>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:layout_marginTop="20dp"
+                android:textColor="@color/grayDark"
+                android:text="Earn extra money-offer optional add on-services to the Buyer"/>
+            <TextView
+                android:id="@+id/tvAddMoreItems"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="16sp"
+                android:textStyle="bold"
+                android:gravity="end"
+                android:textColor="@color/blue"
+                android:layout_marginTop="20dp"
+                android:text="Add more Items"/>
+            <LinearLayout
+                android:id="@+id/llAddtionals"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:visibility="gone"
+                android:background="@color/cardview_light_background"
+                android:orientation="vertical">
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textStyle="bold"
+                    android:textColor="@color/gray"
+                    android:layout_marginTop="20dp"
+                    android:text="Super Fast Delivery"/>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:background="@color/cardview_light_background"
+                    >
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@color/cardview_light_background"
+                        android:layout_marginHorizontal="2dp"
+                        android:layout_weight="2">
+
+                        <TextView
+                            android:id="@+id/tvGigDeliver"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="i can "
+                            android:textColor="@color/gray"
+                            android:textSize="14sp"
+                            android:visibility="invisible" />
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:textColorHint="@color/gray"
+                            android:hint="I can deliver"
+                            android:id="@+id/etGigDeliver"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:background="@color/cardview_light_background"
+                        android:orientation="vertical"
+                        android:layout_marginHorizontal="2dp">
+                        <TextView
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textSize="14sp"
+                            android:textColor="@color/gray"
+                            />
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:hint="$"
+                            android:textColorHint="@color/gray"
+                            android:inputType="number"
+                            android:id="@+id/etAddPrice"/>
+                    </LinearLayout>
+                    <LinearLayout
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:orientation="vertical"
+                        android:background="@color/cardview_light_background"
+                        android:layout_marginHorizontal="2dp"
+                        android:layout_weight="1">
+
+                        <TextView
+                            android:id="@+id/tvPerDay"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:text="Day"
+                            android:textColor="@color/gray"
+                            android:textSize="14sp"
+                            android:visibility="invisible" />
+                        <EditText
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:textColor="@color/black"
+                            android:textSize="14sp"
+                            android:hint="Day"
+                            android:textColorHint="@color/gray"
+                            android:inputType="number"
+                            android:id="@+id/etPerDay"/>
+                    </LinearLayout>
+                </LinearLayout>
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/cardview_light_background"
+                    android:orientation="vertical"
+                    >
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textSize="12sp"
+                        android:textColor="@color/gray"
+                        android:text="What do you need from buyer to get started"
+                        android:id="@+id/tvBuyerRequired"/>
+                    <EditText
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/black"
+                        android:textSize="14sp"
+                        android:textColorHint="@color/gray"
+                        android:hint="What do you need from buyer to get started"
+                        android:id="@+id/etBuyerRequired"/>
+                </LinearLayout>
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="16sp"
+                    android:textColor="@color/gray"
+                    android:text="work Options"
+                    />
+                <RadioGroup
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbRemote"
+                        android:checked="true"
+                        android:textColor="@color/black"
+                        android:text="Remote"
+                        />
+                    <com.google.android.material.radiobutton.MaterialRadioButton
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:id="@+id/rbOnSite"
+                        android:text="Onsite"
+                        android:textColor="@color/black"
+                        />
+                </RadioGroup>
+            </LinearLayout>
+
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/cardview_light_background"
+            android:layout_marginBottom="100dp"
+            android:orientation="vertical">
+            <CheckBox
+                android:id="@+id/checkbox"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textColor="@color/black"
+                android:text="I accept terms and conditions"/>
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blue"
+                android:textColor="@color/white"
+                android:textSize="14sp"
+                android:id="@+id/btnCreateGig"
+                android:text="Create A Gig"/>
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>

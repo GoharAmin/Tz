@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "99625604346",
+    "firebase_url": "https://tzfiverclone.firebaseio.com",
+    "project_id": "tzfiverclone",
+    "storage_bucket": "tzfiverclone.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:99625604346:android:88ff66b57de329c72ea543",
+        "android_client_info": {
+          "package_name": "com.gohar_amin.tz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "99625604346-napfaupjph0u5jv3cfh245bvkhhvs4hk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAoFlIMfrS9zMT6L-YX4s8APvgW-5FspkU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "99625604346-napfaupjph0u5jv3cfh245bvkhhvs4hk.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.gohar_amin.tz">
+
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE " />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <application
+        android:name=".utils.MyApplication"
+        android:allowBackup="true"
+        android:icon="@drawable/tz_logo"
+        android:label="@string/app_name"
+        android:roundIcon="@drawable/tz_logo"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.TZ">
+        <activity android:name=".acitivities.HelpAndSupportActivity"
+            android:theme="@style/Theme.TZ.NoActionBar"
+            ></activity>
+        <activity android:name=".acitivities.ui.ChatActivity"
+            android:theme="@style/Theme.TZ.NoActionBar"/>
+        <activity
+            android:name=".acitivities.HomeActivityWithDrawer"
+            android:theme="@style/Theme.TZ.NoActionBar" />
+        <activity
+            android:name=".acitivities.CheckoutActivity"
+            android:theme="@style/Theme.TZ.NoActionBar" />
+        <activity
+            android:name=".acitivities.GigDetailActivity"
+            android:theme="@style/Theme.TZ.NoActionBar" />
+        <activity
+            android:name=".acitivities.HomeActivity"
+            android:label="@string/title_activity_home" />
+        <activity
+            android:name=".acitivities.RegistrationActivity"
+            android:theme="@style/Theme.TZ.NoActionBar" />
+        <activity
+            android:name=".acitivities.LoginActivity"
+            android:theme="@style/Theme.TZ.NoActionBar" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/Theme.TZ.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <!--<provider android:name="com.esafirm.imagepicker.helper.ImagePickerFileProvider"
+            android:authorities="com.esafirm.imagepicker.helper"
+            android:enabled="true"
+            android:exported="true" >
+        </provider>-->
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>
+
+</manifest>
