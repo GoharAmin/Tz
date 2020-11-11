@@ -38,7 +38,7 @@ class FirebaseHelper {
                         if (task.isSuccessful) {
                             upload.downloadUrl
                                 .addOnCompleteListener { task1: Task<Uri?> ->
-                                    if (task.isSuccessful) {
+                                    if (task1.isSuccessful) {
                                         callback.onData(task1.result as T)
                                     } else {
                                         Log.e(
@@ -237,6 +237,35 @@ class FirebaseHelper {
                 }
         }
     }
+
+    fun <T> getSingleByUid(
+            collectionRef: CollectionReference,
+            uid: String,
+            clazz: Class<T>,
+            callback: ObjectCallback<T>
+    ) {
+        if (isInternetAvailable(callback)) {
+            collectionRef.whereEqualTo("uid",uid).get()
+                    .addOnCompleteListener { task: Task<QuerySnapshot?> ->
+                        if (task.isSuccessful) {
+                            if (task.result != null && !task.result!!.documents.isEmpty()) {
+                                callback.onData(
+                                        task.result!!.documents[0].toObject(clazz) as T
+                                )
+                            } else {
+                                Log.e(
+                                        TAG,
+                                        "task.getResult() returns null"
+                                )
+                            }
+                        } else {
+                            setErrorMessage(callback, task)
+                        }
+                    }
+        }
+    }
+
+
     fun <T> getSingleFireStoreByUid(
         collectionRef: CollectionReference,
         uid: String,

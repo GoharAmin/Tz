@@ -4,6 +4,7 @@
     android:background="@drawable/transparent_border"
     android:backgroundTint="@color/blue"
     android:layout_width="wrap_content"
+    android:id="@+id/root"
     android:paddingHorizontal="5dp"
     android:layout_margin="5dp"
     android:layout_height="wrap_content">
@@ -17,6 +18,7 @@
         android:layout_height="wrap_content"
         android:textSize="12sp"
         android:padding="5dp"
+        android:textColor="@color/black"
         android:maxLines="4"
         android:inputType="textMultiLine"
         android:id="@+id/tvText"/>

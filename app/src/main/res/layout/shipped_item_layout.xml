@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:background="@color/cardview_light_background"
+    android:layout_height="match_parent">
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="match_parent"
+        android:visibility="gone"
+        android:layout_height="100dp"
+        android:src="@drawable/tz_logo"
+        />
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="22sp"
+        android:text="Upload Work"
+        android:gravity="center"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:id="@+id/tvUpload"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:textSize="14sp"
+        android:gravity="center"
+        android:visibility="gone"
+        android:padding="10dp"
+        android:textColor="@color/black"
+        android:id="@+id/tvCost"/>
+    <Button
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@drawable/button_background"
+        android:textColor="@color/white"
+        android:textSize="14sp"
+        android:layout_marginHorizontal="40dp"
+        android:text="Delivered"
+        android:id="@+id/btnShipped"/>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="5dp"
+        android:visibility="gone"
+        android:background="@color/cardview_light_background"
+        android:orientation="horizontal">
+        <de.hdodenhof.circleimageview.CircleImageView
+            android:id="@+id/ivProfile"
+            android:layout_width="60dp"
+            android:layout_height="60dp"
+            android:layout_gravity="center"
+            app:civ_border_color="@color/white"
+            app:civ_border_width="0.5dp"
+            android:src="@drawable/ic_user"/>
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:orientation="vertical"
+            android:layout_marginVertical="5dp"
+            android:layout_marginHorizontal="10dp"
+            android:layout_weight="1">
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="14sp"
+                android:text="Gohar"
+                android:textColor="@color/black"
+                android:id="@+id/tvName"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+
+</LinearLayout>

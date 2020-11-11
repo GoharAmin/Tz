@@ -1,5 +1,6 @@
 package com.gohar_amin.tz.acitivities.ui.home
 
+import android.app.AlertDialog
 import android.content.Context
 import android.os.Bundle
 import android.text.Editable
@@ -21,10 +22,7 @@ import com.gohar_amin.tz.adapters.CatagoriesAdapter
 import com.gohar_amin.tz.adapters.GigsAdapter
 import com.gohar_amin.tz.callback.ArrayCallback
 import com.gohar_amin.tz.callback.ObjectCallback
-import com.gohar_amin.tz.model.Category
-import com.gohar_amin.tz.model.Gig
-import com.gohar_amin.tz.model.User
-import com.gohar_amin.tz.model.UserGig
+import com.gohar_amin.tz.model.*
 import com.gohar_amin.tz.utils.FirebaseHelper
 import com.gohar_amin.tz.utils.JsonParser
 import com.gohar_amin.tz.utils.PrefHelper
@@ -33,6 +31,7 @@ import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
 
 class HomeFragment : Fragment() ,ArrayCallback<UserGig>{
+    lateinit var deliveredRef: CollectionReference
     lateinit var  popularGigsAdapter:GigsAdapter
     lateinit var  latestGigsAdapter:GigsAdapter
     lateinit var  categoryAdapter:CatagoriesAdapter
@@ -52,6 +51,7 @@ class HomeFragment : Fragment() ,ArrayCallback<UserGig>{
 
         lateinit var root: View
     lateinit var ivSearch:ImageView
+        var userId: String?=null
     lateinit var etSerach:EditText
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -78,7 +78,9 @@ class HomeFragment : Fragment() ,ArrayCallback<UserGig>{
         firebaseHelper= FirebaseHelper.getInstance()!!
         gigCollectionRef=FirebaseFirestore.getInstance().collection(GIGS)
         searchGigRef=FirebaseFirestore.getInstance().collection(GIGS)
-        val userId=PrefHelper.getInstance(requireContext())!!.getString("userId")
+        deliveredRef= FirebaseFirestore.getInstance().collection("deliveredOrder");
+
+        userId = PrefHelper.getInstance(requireContext())!!.getString("userId")
         firebaseHelper.getFireStore(
             gigCollectionRef,
             UserGig::class.java,
@@ -137,9 +139,14 @@ class HomeFragment : Fragment() ,ArrayCallback<UserGig>{
                 Toast.makeText(context, "Please enter the email for search", Toast.LENGTH_SHORT).show()
             }
         }
+
         return root
     }
 
+    override fun onResume() {
+        super.onResume()
+        getOrder()
+    }
     private fun searchGig() {
         Utils.showDialog(context)
         firebaseHelper.getSingleFireStoreBytitle(searchGigRef, "title", etSerach.text.toString(), UserGig::class.java, object : ObjectCallback<UserGig> {
@@ -179,4 +186,122 @@ class HomeFragment : Fragment() ,ArrayCallback<UserGig>{
 
         }
     }
+    private fun getOrder() {
+        FirebaseHelper
+                .getInstance()!!
+                .getSingleFireStore(deliveredRef, userId!!, DeliveredOrder::class.java, object : ObjectCallback<DeliveredOrder> {
+                    override fun onError(msg: String?) {
+                        Toast.makeText(context, ""+msg, Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onData(t: DeliveredOrder?) {
+                        t?.let {
+                            if(t.isDelivered && !t.isReview) {
+                                showDialog(it)
+                            }
+                        }
+                    }
+                })
+    }
+    private fun showDialog(order:DeliveredOrder){
+        val view= LayoutInflater.from(context).inflate(R.layout.order_accept_layout,null)
+        val textView: TextView =view.findViewById(R.id.textView2)
+        val btnAccept: Button =view.findViewById(R.id.btnAccept)
+        val btnCancel: Button =view.findViewById(R.id.btnCancel)
+        textView.setText(order.name)
+        val dialog:AlertDialog=AlertDialog
+                .Builder(requireContext())
+                .setView(view)
+                .create()
+                dialog.show()
+        btnAccept.setOnClickListener {
+            order.isAccepted=true
+            deliveredRef.document(order.id!!).set(order)
+                    .addOnCompleteListener {
+                        if(it.isSuccessful){
+                            Toast.makeText(context, "Order is Accepted", Toast.LENGTH_SHORT).show()
+                            dialog.dismiss()
+                            if(order.isAccepted && !order.isReview){
+                                getReview(order)
+                            }
+                        }else{
+                            dialog.dismiss()
+                            Toast.makeText(context, ""+it.exception!!.message, Toast.LENGTH_SHORT).show()
+                        }
+                    }
+        }
+        btnCancel.setOnClickListener {
+            deliveredRef.document(order.id!!).delete().addOnCompleteListener {
+                if(it.isSuccessful){
+                    dialog.dismiss()
+                    Toast.makeText(context, "Order ha been Rejected", Toast.LENGTH_SHORT).show()
+                }else{
+                    dialog.dismiss()
+                    Toast.makeText(context, ""+it.exception!!.message, Toast.LENGTH_SHORT).show()
+                }
+            }
+
+        }
+
+    }
+
+    private fun getReview(order: DeliveredOrder) {
+        val view= LayoutInflater.from(context).inflate(R.layout.review_layout,null)
+        val ratingBar: RatingBar =view.findViewById(R.id.ratingBar)
+        val btnSubmit: Button =view.findViewById(R.id.btnSubmit)
+        btnSubmit.setText(order.name)
+        val dialog:AlertDialog=AlertDialog
+                .Builder(requireContext())
+                .setView(view)
+                .create()
+        val rating = ratingBar.stepSize
+        btnSubmit.setOnClickListener {
+            if(rating>0) {
+                Utils.showDialog(context)
+                order.isReview = true
+                firebaseHelper.saveFireStoreDb(deliveredRef, order.id!!, order, object : ObjectCallback<String> {
+                    override fun onError(msg: String?) {
+                        Utils.dismissDialog()
+                        Toast.makeText(context, "" + msg, Toast.LENGTH_SHORT).show()
+                    }
+
+                    override fun onData(t: String?) {
+                        firebaseHelper.getSingleByUid(gigCollectionRef, order.seller!!, UserGig::class.java, object : ObjectCallback<UserGig> {
+                            override fun onError(msg: String?) {
+                                Utils.dismissDialog()
+                                Toast.makeText(context, "" + msg, Toast.LENGTH_SHORT).show()
+                            }
+
+                            override fun onData(t: UserGig?) {
+                                t?.let {
+                                    it.rating=(it.rating+rating)
+                                    it.raters=(it.raters+1)
+                                    updateGig(it)
+                                }
+
+                            }
+                        })
+                    }
+                })
+            }else{
+                Toast.makeText(context, "Please Rate us", Toast.LENGTH_SHORT).show()
+            }
+        }
+        dialog.show()
+    }
+
+    private fun updateGig(it: UserGig) {
+        firebaseHelper.saveFireStoreDb(gigCollectionRef, it.id!!, it, object : ObjectCallback<String> {
+            override fun onError(msg: String?) {
+                Utils.dismissDialog()
+                Toast.makeText(context, "" + msg, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onData(t: String?) {
+                Utils.dismissDialog()
+                Toast.makeText(context, "Successfully rating is submitted", Toast.LENGTH_SHORT).show()
+            }
+        })
+    }
+
 }

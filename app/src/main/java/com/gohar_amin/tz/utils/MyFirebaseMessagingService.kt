@@ -45,6 +45,7 @@ class MyFirebaseMessagingService : FirebaseMessagingService() {
             .setContentText(body)
             .setSmallIcon(R.drawable.sym_def_app_icon)
             .setContentIntent(pIntent)
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
             .setAutoCancel(true).build()
         //.addAction(R.drawable.ic_microphone, "Accept", pIntent).build();
         //.addAction(R.drawable.ic_microphone, "Accept", pIntent).build();

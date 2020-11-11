@@ -19,4 +19,6 @@ class UserGig {
     var cost:Int=0
     var purchased:Int=0
     var createdAt= ""+System.currentTimeMillis()
+    var rating:Float=0f
+    var raters:Long=0
 }

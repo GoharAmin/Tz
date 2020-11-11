@@ -89,7 +89,7 @@ class GigDetailActivity : AppCompatActivity(), ObjectCallback<User> {
         adapter = ProductReviewsAdapter(this, list)
         recyclerview.adapter = adapter*/
         btnOrderNow.setOnClickListener {
-            if (isCheck) {
+            //if (isCheck) {
                 Log.e("order",Gson().toJson(user))
                 val id=prefHelper.getString(USER_ID)
                 if(!id!!.equals(user!!.id)) {
@@ -100,9 +100,9 @@ class GigDetailActivity : AppCompatActivity(), ObjectCallback<User> {
                 }else{
                     Toast.makeText(context, "You are not capable to order your own Gig", Toast.LENGTH_SHORT).show()
                 }
-            } else {
+            /*} else {
                 Toast.makeText(context, "Please select the option", Toast.LENGTH_SHORT).show()
-            }
+            }*/
         }
         imageViewChat.setOnClickListener {
             val id=prefHelper.getString(USER_ID)

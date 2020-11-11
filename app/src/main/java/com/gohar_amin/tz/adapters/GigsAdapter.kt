@@ -7,6 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
+import android.widget.RatingBar
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
@@ -29,6 +30,7 @@ class GigsAdapter(private val context: Context, private  val list:List<UserGig>,
         lateinit var tvPrice: TextView
         lateinit var tvRating: TextView
         lateinit var tvDescrittion: TextView
+        lateinit var ratingbar:RatingBar
         lateinit var root: CardView
         init {
             tvName=itemView.findViewById(R.id.tvName)
@@ -38,6 +40,7 @@ class GigsAdapter(private val context: Context, private  val list:List<UserGig>,
             tvRating=itemView.findViewById(R.id.tvRating)
             root=itemView.findViewById(R.id.root)
             tvDescrittion=itemView.findViewById(R.id.tvDescrittion)
+            ratingbar=itemView.findViewById(R.id.ratingbar)
         }
     }
 init {
@@ -73,6 +76,9 @@ init {
             context.startActivity(i)
         }
         holder.root.layoutParams = params
+            holder.tvRating.setText(""+gig.rating)
+            holder.tvRaters.setText(" ("+gig.raters+") ")
+            holder.ratingbar.rating=gig.rating!!
     }
 
     override fun getItemCount(): Int {

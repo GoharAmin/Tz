@@ -1,18 +1,24 @@
 package com.gohar_amin.tz.acitivities.ui
 
+import android.app.ProgressDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.os.Handler
 import android.util.Log
+import android.view.LayoutInflater
 import android.view.View
-import android.widget.EditText
-import android.widget.Toast
+import android.widget.*
+import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gohar_amin.tz.R
 import com.gohar_amin.tz.adapters.MessageAdapter
+import com.gohar_amin.tz.callback.ActionCallback
 import com.gohar_amin.tz.callback.ObjectCallback
 import com.gohar_amin.tz.model.Chat
+import com.gohar_amin.tz.model.DeliveredOrder
 import com.gohar_amin.tz.model.GeneralModel
 import com.gohar_amin.tz.model.User
 import com.gohar_amin.tz.utils.FirebaseHelper
@@ -30,7 +36,10 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
 
-class ChatActivity : AppCompatActivity() {
+class ChatActivity : AppCompatActivity() ,ActionCallback{
+    lateinit var alert:AlertDialog
+    private var imageName: String?=null
+    private  var imageUrl: Uri?=null
     private var senderUser: User?=null
     private var user: User? = null
     lateinit var fabSend: FloatingActionButton
@@ -45,7 +54,9 @@ class ChatActivity : AppCompatActivity() {
     lateinit var chatReference: CollectionReference
     lateinit var chatUsers: CollectionReference
     lateinit var receiveReference: CollectionReference
+    lateinit var shippedReference: CollectionReference
     lateinit var firebaseStorage: StorageReference
+    lateinit var deliveredStrorage:StorageReference
     private val TAG = "ChatActivity"
     private var allUserlist: ArrayList<User>? = null
     private var reciverUserlist: ArrayList<User>? = null
@@ -60,6 +71,8 @@ class ChatActivity : AppCompatActivity() {
         recyclerview!!.setHasFixedSize(true)
         receiverId = intent.getStringExtra("openChat")
         val usersExtra = intent.getStringExtra("allUsers");
+        shippedReference=FirebaseFirestore.getInstance().collection("deliveredOrder");
+        deliveredStrorage=FirebaseStorage.getInstance().getReference("delivered")
         if(!intent.getBooleanExtra("notification",false)){
             val userExtra = intent.getStringExtra("recevierUser");
             if (userExtra != null) {
@@ -166,7 +179,7 @@ class ChatActivity : AppCompatActivity() {
         Utils.dismissDialog()
         firebaseStorage = FirebaseStorage.getInstance().getReference("chat")
         chatList = ArrayList()
-        messageAdapter = MessageAdapter(chatList!!, this)
+        messageAdapter = MessageAdapter(chatList!!, this,this)
         recyclerview!!.adapter = messageAdapter
         loadData()
     }
@@ -278,49 +291,76 @@ class ChatActivity : AppCompatActivity() {
         }
     }
 
+    private fun showDialog(){
+        val view= LayoutInflater.from(this).inflate(R.layout.shipped_item_layout,null)
+        val tvUpload: TextView =view.findViewById(R.id.tvUpload)
+        //val textView: TextView =view.findViewById(R.id.tvCost)
+        //val imageView: ImageView =view.findViewById(R.id.imageView)
+        val btnShipped: Button =view.findViewById(R.id.btnShipped)
 
-    /*private fun uploadImages(data: Intent) {
-        val images = data.getStringExtra(CustomConstants.SELECTED_IMAGE)
-        imageList = JsonParser.toList(images, Image::class.java)
-        for (image in imageList) {
-            upload(image)
+        alert = AlertDialog
+                .Builder(this)
+                .setView(view)
+                .create();
+                alert.show()
+        tvUpload.setOnClickListener {
+          Utils.showSelectedImages(this)
         }
-    }*/
+        btnShipped.setOnClickListener {
+            if(imageName!=null && imageUrl!=null){
+                delivered()
+            }else{
+                alert.dismiss()
+                Toast.makeText(this@ChatActivity, "Please Select the image", Toast.LENGTH_SHORT).show()
+            }
+        }
 
-    /*private fun upload(image: Image) {
-        Utils.showDialog(context)
-        Log.e(TAG, "filepath -> " + image.getPath())
-        val child =
-            firebaseStorage.child(receiverId!!).child(image.getName() + System.currentTimeMillis())
-        child.putFile(Uri.fromFile(File(image.getPath())))
-            .addOnCompleteListener { task: Task<UploadTask.TaskSnapshot?> ->
-                if (task.isSuccessful) {
-                    Utils.dismissDialog()
-                    saveImageReference(child)
-                } else {
-                    Utils.dismissDialog()
-                    Log.e(TAG, "upload")
-                    Toast.makeText(context, "Please try again", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun delivered() {
+        FirebaseHelper.getInstance()!!.upload(this, deliveredStrorage, imageName, imageUrl, object : ObjectCallback<Uri?> {
+            override fun onError(msg: String?) {
+                Toast.makeText(this@ChatActivity, "" + msg, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onData(t: Uri?) {
+                t?.let {
+                    val order = DeliveredOrder()
+                    order.seller = senderId
+                    order.buyer = receiverId
+                    order.imageUrl = ""+it
+                    order.isDelivered = true
+                    order.isReview = false
+                    order.name=senderUser!!.name
+                    order.id=receiverId!!
+                    FirebaseHelper.getInstance()!!.saveFireStoreDb(shippedReference, receiverId!!, order, object : ObjectCallback<String> {
+                        override fun onError(msg: String?) {
+                            alert.dismiss()
+                            Toast.makeText(this@ChatActivity, "" + msg, Toast.LENGTH_SHORT).show()
+                        }
+
+                        override fun onData(t: String?) {
+                            alert.dismiss()
+                            Toast.makeText(this@ChatActivity, "Order is Delivered", Toast.LENGTH_SHORT).show()
+                        }
+                    })
                 }
             }
-    }*/
+        })
+    }
 
-    /*private fun saveImageReference(child: StorageReference) {
-        child.downloadUrl.addOnCompleteListener { task: Task<Uri> ->
-            if (task.isSuccessful) {
-                val chat = Chat(
-                    senderId,
-                    receiverId,
-                    "" + System.currentTimeMillis(),
-                    Utils.IMAGE_MESSAGE
-                )
-                chat.imageUrl = "" + task.result
-                chat.userName = firebaseUser!!.phoneNumber
-                send(chat)
-            } else {
-                Log.e(TAG, "url ->saveImageReference" + task.exception!!.message)
-                Toast.makeText(context, "Please try Again", Toast.LENGTH_SHORT).show()
-            }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (requestCode==201 &&resultCode == RESULT_OK && data != null) {
+            imageUrl=data.data!!
+            Log.e("uri",""+imageUrl)
+            imageName=data.data!!.lastPathSegment
+            //ivProfile.setImageURI(imageUrl)
+            //Utils.loadImage(this,imageUrl.toString(),ivProfile)
         }
-    }*/
+    }
+    override fun onSuccess() {
+        Log.e("onSuccess","click");
+        showDialog()
+    }
 }

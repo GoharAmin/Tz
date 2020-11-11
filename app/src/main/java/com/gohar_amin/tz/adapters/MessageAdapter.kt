@@ -1,20 +1,31 @@
 package com.gohar_amin.tz.adapters
 
 import android.content.Context
+import android.graphics.Color
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
+import android.widget.LinearLayout
 import android.widget.TextView
+import androidx.appcompat.app.AppCompatActivity
 import androidx.recyclerview.widget.RecyclerView
 import com.gohar_amin.tz.R
+import com.gohar_amin.tz.callback.ActionCallback
+import com.gohar_amin.tz.dailog.OrderShippedDialog
 import com.gohar_amin.tz.model.Chat
 import com.gohar_amin.tz.utils.Utils
+import com.google.firebase.auth.FirebaseAuth
 
 
-class MessageAdapter(var list: MutableList<Chat>, context: Context) :
+class MessageAdapter(var list: MutableList<Chat>, context: Context,private val callBack:ActionCallback) :
     RecyclerView.Adapter<MessageAdapter.MyViewHolder>() {
     var context: Context
+    var id:String
+    init {
+        id=FirebaseAuth.getInstance().currentUser!!.uid
+    }
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder {
         val view: View
         when (viewType) {
@@ -38,6 +49,15 @@ class MessageAdapter(var list: MutableList<Chat>, context: Context) :
             holder.tvText.visibility = View.GONE
             Utils.loadImage(context, chat.imageUrl, holder.ivMedia)
         }
+
+        holder.root.setOnClickListener {
+            Log.e("onSuccess"," "+chat.clickable);
+            Log.e("onSuccess"," "+id);
+            if(chat.clickable!=null && chat.clickable.equals(id)){
+                callBack.onSuccess()
+                Log.e("onSuccess","click in adapter");
+            }
+        }
     }
 
     override fun getItemCount(): Int {
@@ -54,11 +74,14 @@ class MessageAdapter(var list: MutableList<Chat>, context: Context) :
         var ivMedia: ImageView
         var tvText: TextView
         var tvName: TextView
+        var root:LinearLayout
+
 
         init {
             ivMedia = itemView.findViewById(R.id.ivMedia)
             tvText = itemView.findViewById(R.id.tvText)
             tvName = itemView.findViewById(R.id.tvName)
+            root = itemView.findViewById(R.id.root)
         }
     }
 
