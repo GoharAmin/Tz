@@ -30,7 +30,7 @@ class RegistrationActivity : AppCompatActivity(),ObjectCallback<FirebaseUser> {
     lateinit var etName:EditText
     lateinit var etEmail:EditText
     lateinit var etCountry:EditText
-    lateinit var etLangauge:EditText
+    lateinit var etConfirm:EditText
     lateinit var etPassword:EditText
     lateinit var btnRegister:Button
     lateinit var tvMember:TextView
@@ -51,7 +51,7 @@ class RegistrationActivity : AppCompatActivity(),ObjectCallback<FirebaseUser> {
         etName=findViewById(R.id.etName)
         etEmail=findViewById(R.id.etEmail)
         etCountry=findViewById(R.id.etCountry)
-        etLangauge=findViewById(R.id.etLangauge)
+        etConfirm=findViewById(R.id.etConfirm)
         etPassword=findViewById(R.id.etPassword)
         btnRegister=findViewById(R.id.btnRegister)
         tvMember=findViewById(R.id.tvMember)
@@ -72,7 +72,8 @@ class RegistrationActivity : AppCompatActivity(),ObjectCallback<FirebaseUser> {
                 user.password = etPassword.text.toString()
                 user.name=etName.text.toString()
                 user.country=etCountry.text.toString()
-                user.language=etLangauge.text.toString()
+                //user.language=etLangauge.text.toString()
+                user.fcm=prefHelper!!.getString("fcm")!!
                 firebaseHelper!!.emailAndPasswordCreate(
                     user.email!!,
                     user.password!!,
@@ -104,8 +105,11 @@ class RegistrationActivity : AppCompatActivity(),ObjectCallback<FirebaseUser> {
         else if(TextUtils.isEmpty(etCountry.text)){
             Toast.makeText(context, "Please enter the Country", Toast.LENGTH_SHORT).show()
             return false
-        }else if(TextUtils.isEmpty(etLangauge.text)){
+        }else if(TextUtils.isEmpty(etConfirm.text)){
             Toast.makeText(context, "Please enter the Language", Toast.LENGTH_SHORT).show()
+            return false
+        }else if(!etConfirm.text.toString().equals(etPassword.text.toString())){
+            Toast.makeText(context, "Please Enter Valid", Toast.LENGTH_SHORT).show()
             return false
         }
         else{

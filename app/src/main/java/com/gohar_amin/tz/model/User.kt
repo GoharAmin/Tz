@@ -8,6 +8,7 @@ class User {
     var email:String?=null
     var id:String?=null
     var imageUrl:String?=null
+    var fcm:String?=null
 
 
 }

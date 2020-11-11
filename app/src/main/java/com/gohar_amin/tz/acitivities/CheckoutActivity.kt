@@ -18,6 +18,7 @@ import com.gohar_amin.tz.model.Product
 import com.gohar_amin.tz.model.User
 import com.gohar_amin.tz.model.UserGig
 import com.gohar_amin.tz.utils.FirebaseHelper
+import com.gohar_amin.tz.utils.PrefHelper
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.firestore.CollectionReference
 import com.google.firebase.firestore.FirebaseFirestore
@@ -36,9 +37,11 @@ class CheckoutActivity : AppCompatActivity() {
     lateinit var btnBuyNow:Button
     lateinit var firebaseHelper: FirebaseHelper
     lateinit var collectionRef:CollectionReference
+    lateinit var notificationRef:CollectionReference
     lateinit var context:Context
     lateinit var dialog:ProgressDialog
     lateinit var tvTotal:TextView
+    var fcm:String?=null
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         context=this
@@ -55,7 +58,9 @@ class CheckoutActivity : AppCompatActivity() {
         userGig=Gson().fromJson(intent.getStringExtra("userGig"),UserGig::class.java)
         firebaseHelper= FirebaseHelper.getInstance()!!
         collectionRef=FirebaseFirestore.getInstance().collection("orders")
+        notificationRef=FirebaseFirestore.getInstance().collection("ordersNotication")
         gigCollectionRef=FirebaseFirestore.getInstance().collection(GIGS)
+        fcm=PrefHelper.getInstance(this)!!.getString("fcm")
         userGig!!.purchased=userGig!!.purchased+1
         tvPrice.setText(""+userGig!!.cost);
         tvProductName.setText(""+userGig!!.title);
@@ -99,16 +104,25 @@ class CheckoutActivity : AppCompatActivity() {
                 }
 
                 override fun onData(t: String?) {
-                    dialog.dismiss()
-                    Toast.makeText(context, "Your Order has benn added successfully", Toast.LENGTH_SHORT).show()
-                    startActivity(
-                        Intent(
-                            this@CheckoutActivity,
-                            HomeActivityWithDrawer::class.java
-                        )
-                    );
+                    saveNotifaction(map)
+
                 }
             })
+    }
+
+    private fun saveNotifaction(map: java.util.HashMap<String, Any>) {
+        map.put("fcm",user!!.fcm!!)
+        firebaseHelper.saveFireStoreDb(notificationRef, FirebaseAuth.getInstance().currentUser!!.uid, map,object : ObjectCallback<String> {
+            override fun onError(msg: String?) {
+                Toast.makeText(context, ""+msg, Toast.LENGTH_SHORT).show()
+            }
+
+            override fun onData(t: String?) {
+                dialog.dismiss()
+                Toast.makeText(context, "Your Order has benn added successfully", Toast.LENGTH_SHORT).show()
+                startActivity(Intent(this@CheckoutActivity, HomeActivityWithDrawer::class.java));
+            }
+        })
     }
 
     /*private fun setUpList() {

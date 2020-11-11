@@ -5,6 +5,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.text.TextUtils
+import android.util.Log
 import android.widget.Button
 import android.widget.EditText
 import android.widget.TextView
@@ -73,7 +74,6 @@ class LoginActivity : AppCompatActivity() ,ObjectCallback<FirebaseUser>{
         }
 
     }
-
     override fun onError(msg: String?) {
         Toast.makeText(context, ""+msg, Toast.LENGTH_SHORT).show()
     }
@@ -81,24 +81,44 @@ class LoginActivity : AppCompatActivity() ,ObjectCallback<FirebaseUser>{
     override fun onData(t: FirebaseUser?) {
         t?.let {
             if(user!=null) {
-                firebaseHelper!!.getSingleFireStore(userCollectionRefernce,it.uid,User::class.java,object :ObjectCallback<User>{
-                    override fun onError(msg: String?) {
-                        Utils.dismissDialog()
+                user!!.fcm=PrefHelper.getInstance(this@LoginActivity)!!.getString("fcm")
+                val map=HashMap<String,Any>()
+                map.put("fcm",""+user!!.fcm)
+                userCollectionRefernce.document(it.uid).update(map).addOnCompleteListener {task->
+                    if(task.isSuccessful){
+                        getUser(it)
                     }
+                    else{
+                        Log.e("onError",task.exception.toString())
+                        Toast.makeText(context, "Please try again", Toast.LENGTH_SHORT).show()
+                    }
+                }
 
-                    override fun onData(t: User?) {
-                        Utils.dismissDialog()
-                        if(t!=null){
-                            Utils.dismissDialog()
-                            prefHelper!!.saveString(USER_ID,""+t.id)
-                            prefHelper!!.saveString("me", JsonParser.toJson(t))
-                            startActivity(Intent(context, HomeActivityWithDrawer::class.java))
-                        }
-                    }
-                })
 
             }
         }
+    }
+
+    private fun getUser(it: FirebaseUser) {
+        firebaseHelper!!.getSingleFireStore(
+            userCollectionRefernce,
+            it.uid,
+            User::class.java,
+            object : ObjectCallback<User> {
+                override fun onError(msg: String?) {
+                    Utils.dismissDialog()
+                }
+
+                override fun onData(t: User?) {
+                    Utils.dismissDialog()
+                    if (t != null) {
+                        Utils.dismissDialog()
+                        prefHelper!!.saveString(USER_ID, "" + t.id)
+                        prefHelper!!.saveString("me", JsonParser.toJson(t))
+                        startActivity(Intent(context, HomeActivityWithDrawer::class.java))
+                    }
+                }
+            })
     }
 
 }

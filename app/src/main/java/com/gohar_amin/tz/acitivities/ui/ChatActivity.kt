@@ -11,9 +11,11 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.gohar_amin.tz.R
 import com.gohar_amin.tz.adapters.MessageAdapter
+import com.gohar_amin.tz.callback.ObjectCallback
 import com.gohar_amin.tz.model.Chat
 import com.gohar_amin.tz.model.GeneralModel
 import com.gohar_amin.tz.model.User
+import com.gohar_amin.tz.utils.FirebaseHelper
 import com.gohar_amin.tz.utils.JsonParser
 import com.gohar_amin.tz.utils.PrefHelper
 import com.gohar_amin.tz.utils.Utils
@@ -58,10 +60,16 @@ class ChatActivity : AppCompatActivity() {
         recyclerview!!.setHasFixedSize(true)
         receiverId = intent.getStringExtra("openChat")
         val usersExtra = intent.getStringExtra("allUsers");
-        val userExtra = intent.getStringExtra("recevierUser");
-        if (userExtra != null) {
-            user = JsonParser.toObject(userExtra, User::class.java)
+        if(!intent.getBooleanExtra("notification",false)){
+            val userExtra = intent.getStringExtra("recevierUser");
+            if (userExtra != null) {
+                user = JsonParser.toObject(userExtra, User::class.java)
+            }
+        }else{
+            getReceviverUser();
         }
+
+
         firebaseUser = FirebaseAuth.getInstance().currentUser
         chatUsers = FirebaseFirestore.getInstance().collection("chatUsers")
         prefHelper = PrefHelper.getInstance(this)
@@ -92,6 +100,25 @@ class ChatActivity : AppCompatActivity() {
                 sendMessage()
         }
 
+    }
+
+    private fun getReceviverUser() {
+        val collection = FirebaseFirestore.getInstance().collection("users")
+        FirebaseHelper.getInstance()!!.getSingleFireStore(
+            collection,
+            receiverId!!,
+            User::class.java,
+            object : ObjectCallback<User> {
+                override fun onError(msg: String?) {
+                    Toast.makeText(this@ChatActivity, ""+msg, Toast.LENGTH_SHORT).show()
+                }
+
+                override fun onData(t: User?) {
+                    t?.let {
+                        user=it
+                    }
+                }
+            })
     }
 
     private fun getAllUsers() {

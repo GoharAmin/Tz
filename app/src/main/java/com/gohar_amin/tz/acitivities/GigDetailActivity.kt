@@ -41,7 +41,6 @@ class GigDetailActivity : AppCompatActivity(), ObjectCallback<User> {
     lateinit var tvDecription: TextView
     lateinit var tvPricePerDay: TextView
     lateinit var tvCountry: TextView
-    lateinit var tvSpeaks: TextView
     lateinit var checkBox: CheckBox
     lateinit var prefHelper: PrefHelper
     val USER_ID:String="userId"
@@ -60,7 +59,6 @@ class GigDetailActivity : AppCompatActivity(), ObjectCallback<User> {
         imageView = findViewById(R.id.imageView)
         ivProfile = findViewById(R.id.ivProfile)
         tvCountry = findViewById(R.id.tvCountry)
-        tvSpeaks = findViewById(R.id.tvSpeaks)
         checkBox = findViewById(R.id.checkBox)
         recyclerview.setHasFixedSize(true)
         firebaseHelper = FirebaseHelper.getInstance()!!
@@ -153,7 +151,6 @@ class GigDetailActivity : AppCompatActivity(), ObjectCallback<User> {
             Log.e("onData",Gson().toJson(user))
             Utils.loadImage(context,user!!.imageUrl,ivProfile)
             tvCountry.setText("" + user!!.country)
-            tvSpeaks.setText("" + user!!.language)
             tvName.setText(""+user!!.name)
         }
     }
